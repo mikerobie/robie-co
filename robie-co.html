@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robie Co. — HR Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navy:       #1a2744;
+    --navy-deep:  #111c36;
+    --navy-mid:   #243258;
+    --blue-acc:   #2f5fad;
+    --blue-light: #e8eef8;
+    --white:      #ffffff;
+    --off-white:  #f7f8fc;
+    --text:       #1a2744;
+    --muted:      #5a6a8a;
+    --border:     #dde3f0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--white);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  .container { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  @media (min-width: 768px) { .container { padding: 0 48px; } }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(26,39,68,0.09); }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px; padding: 0 20px;
+    max-width: 1120px; margin: 0 auto;
+  }
+  @media (min-width: 768px) { .nav-inner { padding: 0 48px; } }
+
+  .nav-logo {
+    font-weight: 700; font-size: 1.05rem; letter-spacing: 0.01em;
+    color: var(--navy); text-decoration: none;
+    display: flex; align-items: center;
+  }
+  .nav-logo-dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--blue-acc); border-radius: 50%;
+    margin-left: 4px; margin-bottom: 1px;
+  }
+  .nav-links { display: none; gap: 32px; list-style: none; align-items: center; }
+  @media (min-width: 768px) { .nav-links { display: flex; } }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.875rem; font-weight: 500; transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--navy); }
+  .btn-nav {
+    background: var(--navy); color: var(--white) !important;
+    padding: 9px 20px; border-radius: 6px;
+    font-size: 0.875rem !important; font-weight: 600 !important;
+    transition: background 0.15s !important;
+  }
+  .btn-nav:hover { background: var(--navy-mid) !important; }
+
+  .nav-hamburger {
+    display: flex; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  @media (min-width: 768px) { .nav-hamburger { display: none; } }
+  .nav-hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--navy); border-radius: 2px;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none; position: fixed;
+    top: 64px; left: 0; right: 0; bottom: 0;
+    background: var(--white); z-index: 199;
+    flex-direction: column; padding: 24px 20px; gap: 0;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    text-decoration: none; color: var(--text);
+    font-size: 1.05rem; font-weight: 500;
+    padding: 16px 0; border-bottom: 1px solid var(--border); display: block;
+  }
+  .mobile-menu .btn-mobile-cta {
+    margin-top: 24px; background: var(--navy); color: var(--white);
+    text-align: center; border-radius: 8px; border: none;
+    padding: 16px; font-size: 1rem; font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 104px 0 64px;
+    background: var(--navy);
+    position: relative; overflow: hidden;
+  }
+  @media (min-width: 768px) { .hero { padding: 140px 0 100px; } }
+
+  .hero-inner {
+    display: grid; gap: 48px; grid-template-columns: 1fr;
+  }
+  @media (min-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr 1fr; align-items: center; gap: 80px; }
+  }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 20px;
+  }
+  .eyebrow-line { display: block; width: 20px; height: 1px; background: #7fa8e8; }
+  .hero-title {
+    font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+    font-weight: 700; line-height: 1.1; letter-spacing: -0.025em;
+    color: var(--white); margin-bottom: 22px;
+  }
+  .hero-title-accent { color: #7fa8e8; }
+  .hero-sub {
+    font-size: clamp(0.97rem, 2vw, 1.08rem);
+    color: rgba(255,255,255,0.62);
+    line-height: 1.78; margin-bottom: 36px; max-width: 500px;
+  }
+  .hero-sub strong { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--white); color: var(--navy);
+    text-decoration: none; padding: 14px 26px;
+    font-weight: 600; font-size: 0.93rem; border-radius: 6px;
+    transition: background 0.15s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--blue-light); transform: translateY(-1px); }
+  .btn-arrow { transition: transform 0.2s; }
+  .btn-primary:hover .btn-arrow { transform: translateX(4px); }
+
+  .hero-right { display: flex; flex-direction: column; gap: 14px; }
+  @media (max-width: 899px) { .hero-right { display: none; } }
+
+  .stat-card {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px; padding: 22px 26px;
+    transition: background 0.2s;
+  }
+  .stat-card:hover { background: rgba(255,255,255,0.11); }
+  .stat-number {
+    font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em;
+    color: var(--white); line-height: 1; margin-bottom: 5px;
+  }
+  .stat-label { font-size: 0.83rem; color: rgba(255,255,255,0.48); }
+
+  /* TRUST BAR */
+  .logobar {
+    background: var(--off-white); border-bottom: 1px solid var(--border);
+    padding: 14px 0; overflow-x: auto;
+  }
+  .logobar-inner {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    font-size: 0.76rem; font-weight: 500;
+    color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .lb-dot {
+    width: 4px; height: 4px; background: var(--border);
+    border-radius: 50%; flex-shrink: 0;
+    display: none;
+  }
+  @media (min-width: 600px) { .lb-dot { display: block; } }
+
+  /* SECTION COMMON */
+  .section-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--blue-acc); margin-bottom: 14px;
+  }
+  .section-eyebrow::before {
+    content: ''; display: block; width: 18px; height: 1px; background: var(--blue-acc);
+  }
+  .section-title {
+    font-size: clamp(1.65rem, 3.5vw, 2.5rem);
+    font-weight: 700; letter-spacing: -0.02em;
+    line-height: 1.2; color: var(--navy);
+  }
+
+  /* PROBLEM */
+  .problem { padding: 72px 0; background: var(--white); }
+  @media (min-width: 768px) { .problem { padding: 100px 0; } }
+
+  .problem-intro {
+    font-size: 1rem; color: var(--muted); line-height: 1.75;
+    max-width: 600px; margin: 18px 0 48px;
+  }
+  .problem-grid {
+    display: grid; gap: 2px; grid-template-columns: 1fr;
+    background: var(--border); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+  }
+  @media (min-width: 768px) { .problem-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .problem-item {
+    background: var(--white); padding: 32px 28px;
+    transition: background 0.15s;
+  }
+  .problem-item:hover { background: var(--off-white); }
+  .problem-num {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+    color: var(--blue-acc); margin-bottom: 12px; text-transform: uppercase;
+  }
+  .problem-item h3 { font-size: 0.98rem; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .problem-item p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+  /* SERVICES */
+  .services {
+    padding: 72px 0; background: var(--off-white);
+    border-top: 1px solid var(--border);
+  }
+  @media (min-width: 768px) { .services { padding: 100px 0; } }
+
+  .services-header {
+    display: grid; gap: 20px; grid-template-columns: 1fr; margin-bottom: 44px;
+  }
+  @media (min-width: 768px) {
+    .services-header { grid-template-columns: 1fr 1fr; align-items: end; gap: 60px; }
+  }
+  .services-intro { font-size: 0.97rem; color: var(--muted); line-height: 1.75; }
+
+  .service-grid {
+    display: grid; gap: 14px; grid-template-columns: 1fr;
+  }
+  @media (min-width: 580px) { .service-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .service-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 10px; padding: 32px 28px;
+    border-top: 3px solid transparent;
+    transition: border-top-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  .service-card:hover {
+    border-top-color: var(--blue-acc);
+    box-shadow: 0 8px 28px rgba(26,39,68,0.07);
+    transform: translateY(-2px);
+  }
+  .service-icon { font-size: 1.4rem; margin-bottom: 16px; display: block; }
+  .service-card h3 { font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
+  .service-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+  .service-bullets { margin-top: 16px; list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .service-bullets li {
+    font-size: 0.83rem; color: var(--muted);
+    display: flex; align-items: baseline; gap: 7px;
+  }
+  .service-bullets li::before { content: '→'; color: var(--blue-acc); font-size: 0.72rem; flex-shrink: 0; font-weight: 600; }
+
+  /* ABOUT */
+  .about { padding: 72px 0; background: var(--navy); }
+  @media (min-width: 768px) { .about { padding: 100px 0; } }
+
+  .about-inner {
+    display: grid; gap: 48px; grid-template-columns: 1fr;
+  }
+  @media (min-width: 900px) {
+    .about-inner { grid-template-columns: 1fr 1fr; align-items: start; gap: 72px; }
+  }
+
+  .about-left .section-eyebrow { color: rgba(255,255,255,0.4); }
+  .about-left .section-eyebrow::before { background: rgba(255,255,255,0.25); }
+  .about-title {
+    font-size: clamp(1.65rem, 3vw, 2.3rem);
+    font-weight: 700; letter-spacing: -0.02em;
+    line-height: 1.2; color: var(--white); margin-bottom: 26px;
+  }
+  .about-title span { color: #7fa8e8; }
+  .about-body p { font-size: 0.94rem; color: rgba(255,255,255,0.58); line-height: 1.8; margin-bottom: 14px; }
+  .about-body p:last-child { margin-bottom: 0; }
+  .about-body strong { color: rgba(255,255,255,0.88); font-weight: 500; }
+
+  .credentials { display: flex; flex-direction: column; gap: 10px; margin-top: 32px; }
+  .credential {
+    display: flex; align-items: center; gap: 11px;
+    font-size: 0.86rem; color: rgba(255,255,255,0.52); font-weight: 500;
+  }
+  .cred-check {
+    width: 20px; height: 20px; background: var(--blue-acc);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .cred-check svg { width: 10px; height: 10px; fill: none; stroke: white; stroke-width: 2.5; }
+
+  .about-right {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 36px 32px;
+  }
+  .about-quote {
+    font-size: 1.1rem; font-weight: 500; line-height: 1.65;
+    color: var(--white); margin-bottom: 20px; font-style: italic;
+  }
+  .about-divider { width: 36px; height: 2px; background: var(--blue-acc); margin: 24px 0; }
+  .about-right p { font-size: 0.9rem; color: rgba(255,255,255,0.52); line-height: 1.78; }
+
+  /* PROCESS */
+  .process { padding: 72px 0; background: var(--white); border-top: 1px solid var(--border); }
+  @media (min-width: 768px) { .process { padding: 100px 0; } }
+
+  .process-header { margin-bottom: 48px; }
+  .process-subtitle { font-size: 0.97rem; color: var(--muted); margin-top: 12px; max-width: 500px; line-height: 1.7; }
+
+  .process-steps {
+    display: grid; gap: 16px; grid-template-columns: 1fr;
+  }
+  @media (min-width: 580px) { .process-steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px) { .process-steps { grid-template-columns: repeat(4, 1fr); } }
+
+  .process-step {
+    padding: 28px 24px; border: 1px solid var(--border); border-radius: 10px;
+    background: var(--white); transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .process-step:hover { border-color: var(--blue-acc); box-shadow: 0 4px 18px rgba(26,39,68,0.06); }
+  .step-num {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--blue-acc); margin-bottom: 14px;
+  }
+  .process-step h3 { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .process-step p { font-size: 0.86rem; color: var(--muted); line-height: 1.7; }
+
+  /* CTA */
+  .cta-section { padding: 72px 0; background: var(--navy-deep); }
+  @media (min-width: 768px) { .cta-section { padding: 100px 0; } }
+
+  .cta-inner {
+    display: grid; gap: 36px; grid-template-columns: 1fr; align-items: center;
+  }
+  @media (min-width: 768px) { .cta-inner { grid-template-columns: 1fr auto; gap: 80px; } }
+
+  .cta-eyebrow {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #7fa8e8; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cta-eyebrow::before { content: ''; display: block; width: 18px; height: 1px; background: #7fa8e8; }
+  .cta-title {
+    font-size: clamp(1.65rem, 3vw, 2.3rem);
+    font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
+    color: var(--white); margin-bottom: 14px;
+  }
+  .cta-sub { font-size: 0.95rem; color: rgba(255,255,255,0.52); line-height: 1.75; max-width: 500px; }
+
+  .btn-cta {
+    display: inline-flex; flex-direction: column; align-items: center;
+    background: var(--white); color: var(--navy);
+    text-decoration: none; padding: 20px 36px;
+    font-weight: 700; font-size: 1rem;
+    border-radius: 8px; transition: background 0.15s, transform 0.15s;
+    text-align: center; white-space: nowrap;
+  }
+  @media (max-width: 767px) { .btn-cta { width: 100%; } }
+  .btn-cta:hover { background: var(--blue-light); transform: translateY(-2px); }
+  .btn-cta-sub { font-size: 0.72rem; font-weight: 400; color: var(--muted); margin-top: 4px; }
+
+  /* FOOTER */
+  footer { background: var(--navy); border-top: 1px solid rgba(255,255,255,0.07); padding: 36px 0; }
+  .footer-inner {
+    display: flex; flex-direction: column; gap: 18px; align-items: flex-start;
+  }
+  @media (min-width: 600px) {
+    .footer-inner { flex-direction: row; align-items: center; justify-content: space-between; }
+  }
+  .footer-logo { font-weight: 700; font-size: 0.92rem; color: rgba(255,255,255,0.65); }
+  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.28); }
+  .footer-links { display: flex; gap: 22px; list-style: none; flex-wrap: wrap; }
+  .footer-links a { text-decoration: none; font-size: 0.8rem; color: rgba(255,255,255,0.38); transition: color 0.15s; }
+  .footer-links a:hover { color: rgba(255,255,255,0.72); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(10,18,40,0.72); z-index: 999;
+    backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--white); border-radius: 12px;
+    padding: 40px 36px; max-width: 510px; width: 100%;
+    position: relative; animation: fadeUp 0.25s both;
+    max-height: 90vh; overflow-y: auto;
+  }
+  @media (max-width: 480px) { .modal { padding: 28px 20px; } }
+  .modal-close {
+    position: absolute; top: 14px; right: 18px;
+    background: none; border: none; font-size: 1.4rem;
+    cursor: pointer; color: var(--muted); line-height: 1; padding: 4px;
+  }
+  .modal-title { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); margin-bottom: 5px; }
+  .modal-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; border: 1px solid var(--border);
+    background: var(--white); padding: 10px 13px;
+    font-family: 'Inter', sans-serif; font-size: 0.92rem;
+    color: var(--text); outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    border-radius: 6px; appearance: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--blue-acc);
+    box-shadow: 0 0 0 3px rgba(47,95,173,0.1);
+  }
+  .form-group textarea { resize: vertical; min-height: 86px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 460px) { .form-row { grid-template-columns: 1fr; } }
+
+  .btn-submit {
+    width: 100%; background: var(--navy); color: var(--white);
+    border: none; padding: 13px; border-radius: 6px;
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.93rem;
+    cursor: pointer; transition: background 0.15s; margin-top: 4px;
+  }
+  .btn-submit:hover { background: var(--navy-mid); }
+  .form-note { text-align: center; font-size: 0.74rem; color: var(--muted); margin-top: 10px; }
+  .modal-calendly { max-width: 720px; padding: 28px 28px 16px; }
+  .calendly-header { margin-bottom: 12px; }
+  .modal-calendly .modal-title { font-size: 1.3rem; }
+  .modal-calendly .modal-sub { margin-bottom: 0; }
+  .form-note code, .form-note strong { font-size: 0.74rem; background: var(--off-white); padding: 1px 5px; border-radius: 3px; }
+  @media (max-width: 480px) { .modal-calendly { padding: 20px 16px 12px; } }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeUp 0.65s both; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">Robie Co.</a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#" class="btn-nav" onclick="openModal(event)">Let's Talk</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#services" onclick="closeMobileMenu()">Services</a>
+  <a href="#about" onclick="closeMobileMenu()">About</a>
+  <a href="#process" onclick="closeMobileMenu()">Process</a>
+  <a href="#" class="btn-mobile-cta" onclick="closeMobileMenu(); openModal(event)">Let's Talk →</a>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow fade-in">
+          <span class="eyebrow-line"></span>HR Consulting
+        </div>
+        <h1 class="hero-title fade-in delay-1">
+          Your HR headaches<br>have a <span class="hero-title-accent">fix.</span>
+        </h1>
+        <p class="hero-sub fade-in delay-2">
+          Most HR problems aren't complicated. They're just <strong>unresolved.</strong>
+          Robie Co. helps organizations cut through the noise and actually fix what's broken —
+          from classification tangles to hiring that moves at the speed of business.
+        </p>
+        <a href="#" class="btn-primary fade-in delay-3" onclick="openModal(event)">
+          Start a Conversation <span class="btn-arrow">→</span>
+        </a>
+      </div>
+      <div class="hero-right">
+        <div class="stat-card">
+          <div class="stat-number">10+</div>
+          <div class="stat-label">Years in federal people operations</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Project-based — no retainers, no bloat</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">Day 1</div>
+          <div class="stat-label">You get a specialist, not a junior staffer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="logobar">
+  <div class="container">
+    <div class="logobar-inner">
+      <span>HR Consulting</span>
+      <span class="lb-dot"></span>
+      <span>Government &amp; Private Sector</span>
+      <span class="lb-dot"></span>
+      <span>Job Classification &amp; Role Design</span>
+      <span class="lb-dot"></span>
+      <span>Hiring &amp; Assessment</span>
+      <span class="lb-dot"></span>
+      <span>Policy &amp; Compliance</span>
+      <span class="lb-dot"></span>
+      <span>Project-Based Engagements</span>
+    </div>
+  </div>
+</div>
+
+<section class="problem">
+  <div class="container">
+    <div class="section-eyebrow">Sound Familiar?</div>
+    <h2 class="section-title">Most HR teams are stuck<br>doing it all wrong.</h2>
+    <p class="problem-intro">
+      Whether you're running a government agency or a growing private company, the problems look different on the surface — but underneath, they're the same. And they compound the longer they go unaddressed.
+    </p>
+    <div class="problem-grid">
+      <div class="problem-item">
+        <div class="problem-num">01</div>
+        <h3>Hiring that moves like molasses</h3>
+        <p>Too many approval layers, outdated job postings, and assessment processes that screen out good candidates instead of finding them. The role stays open. The team stays stretched.</p>
+      </div>
+      <div class="problem-item">
+        <div class="problem-num">02</div>
+        <h3>Job descriptions nobody believes</h3>
+        <p>Whether it's a federal PD or a private sector job req, if it doesn't reflect what people actually do, you've got pay equity risk, compliance exposure, and a retention problem waiting to happen.</p>
+      </div>
+      <div class="problem-item">
+        <div class="problem-num">03</div>
+        <h3>HR policy as legal wallpaper</h3>
+        <p>It exists. Nobody reads it. Managers ignore it until something goes wrong — and then it becomes everybody's problem. Policy that doesn't get followed isn't protection. It's liability.</p>
+      </div>
+      <div class="problem-item">
+        <div class="problem-num">04</div>
+        <h3>Growth that outpaced your structure</h3>
+        <p>You scaled fast and HR infrastructure didn't keep up. Inconsistent titles, undefined career paths, comp decisions made on gut feel. That's fixable — but only if someone actually fixes it.</p>
+      </div>
+      <div class="problem-item">
+        <div class="problem-num">05</div>
+        <h3>Compliance gaps you don't know about yet</h3>
+        <p>FLSA misclassifications, outdated I-9 practices, performance documentation that won't hold up — these aren't hypotheticals. They're sitting in your files right now, waiting to become real problems.</p>
+      </div>
+      <div class="problem-item">
+        <div class="problem-num">06</div>
+        <h3>Consultants who don't know your world</h3>
+        <p>Big firms send whoever's available. You get a generalist reading your org chart for the first time on day one. What you actually need is someone who's already solved this exact problem before.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="container">
+    <div class="services-header">
+      <div>
+        <div class="section-eyebrow">What We Do</div>
+        <h2 class="section-title">Consulting that actually<br>moves the needle.</h2>
+      </div>
+      <p class="services-intro">No fluff. No junior staff. You get direct access to senior HR expertise on the specific problem you need solved — whether you're a government agency, a nonprofit, or a private company growing faster than your HR infrastructure.</p>
+    </div>
+    <div class="service-grid">
+      <div class="service-card">
+        <span class="service-icon">⚖️</span>
+        <h3>Job Classification &amp; Role Design</h3>
+        <p>Misclassified roles aren't just a paperwork problem — they're a pay equity risk, a retention issue, and a compliance exposure all at once. We get your roles accurately defined and properly structured, whether you're working under OPM standards or building a private sector job architecture from scratch.</p>
+        <ul class="service-bullets">
+          <li>Job description development and audit</li>
+          <li>Federal PD review and OPM standards analysis</li>
+          <li>Private sector job leveling and banding</li>
+          <li>Classification appeals support</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🎯</span>
+        <h3>Hiring &amp; Assessment</h3>
+        <p>A job posting is not a hiring strategy. We build end-to-end processes that actually identify the right candidates — structured assessments, competency-based screening, and interview frameworks that hold up whether you're filling a GS-13 or your next VP of Operations.</p>
+        <ul class="service-bullets">
+          <li>Job analysis and competency modeling</li>
+          <li>Structured interview and assessment design</li>
+          <li>SME panel facilitation</li>
+          <li>Federal vacancy announcement writing</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🔧</span>
+        <h3>HR Process Improvement</h3>
+        <p>If your HR process has more steps than a passport renewal, something's wrong. We map what you're doing, find where it's breaking down, and rebuild it for speed and consistency — without cutting corners on compliance or quality.</p>
+        <ul class="service-bullets">
+          <li>Hiring workflow analysis and redesign</li>
+          <li>Onboarding process development</li>
+          <li>Time-to-hire and time-to-productivity reduction</li>
+          <li>SOP development and documentation</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">📋</span>
+        <h3>Policy &amp; Compliance</h3>
+        <p>HR policy that nobody reads is just liability stored in a folder. We write policy people can actually follow — and audit what you already have to find the gaps before a regulator, an attorney, or a bad termination does it for you.</p>
+        <ul class="service-bullets">
+          <li>Employee handbook development and review</li>
+          <li>Federal and state regulatory compliance audits</li>
+          <li>FLSA and classification risk review</li>
+          <li>Manager guidance and training materials</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-inner">
+      <div class="about-left">
+        <div class="section-eyebrow">About Robie Co.</div>
+        <h2 class="about-title">
+          You don't need a 30-person firm.<br>
+          You need <span>the right person.</span>
+        </h2>
+        <div class="about-body">
+          <p>I've spent over a decade doing federal HR the hard way — working through classification evaluations, building hiring processes from scratch, and figuring out what actually works when the pressure is real and the timeline isn't.</p>
+          <p>Robie Co. exists because most organizations don't need a big engagement. They need a <strong>specific problem solved by someone who's solved it before.</strong> No upsells. No recurring invoices for work you didn't ask for.</p>
+          <p>When you work with Robie Co., you're working with me — not getting handed off. That's a feature, not a limitation.</p>
+        </div>
+        <div class="credentials">
+          <div class="credential">
+            <div class="cred-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,8.5 11,1.5"/></svg></div>
+            10+ Years HR
+          </div>
+          <div class="credential">
+            <div class="cred-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,8.5 11,1.5"/></svg></div>
+            Classification Specialist
+          </div>
+          <div class="credential">
+            <div class="cred-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,8.5 11,1.5"/></svg></div>
+            Assessment &amp; Hiring Expert
+          </div>
+          <div class="credential">
+            <div class="cred-check"><svg viewBox="0 0 12 10"><polyline points="1,5 4.5,8.5 11,1.5"/></svg></div>
+            Based in Arlington Heights, IL
+          </div>
+        </div>
+      </div>
+      <div class="about-right">
+        <p class="about-quote">
+          "Most HR problems aren't mysteries. They're decisions nobody was empowered to make,
+          by someone without enough information to make them."
+        </p>
+        <div class="about-divider"></div>
+        <p>The typical consulting engagement answers the wrong question — it tells you what's wrong and leaves you holding the bag on what to do about it. Robie Co. is different because the deliverable isn't a report. It's a resolved problem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="container">
+    <div class="process-header">
+      <div class="section-eyebrow">How It Works</div>
+      <h2 class="section-title">From first call to final deliverable —<br>no surprises.</h2>
+      <p class="process-subtitle">Project-based work means you know exactly what you're getting before anything starts.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-num">Step 01</div>
+        <h3>Discovery Call</h3>
+        <p>We talk through what you're dealing with. No pitch, no agenda — just figuring out whether and how I can help. Usually 30–45 minutes.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">Step 02</div>
+        <h3>Scoped Proposal</h3>
+        <p>You get a clear scope with defined deliverables, a flat project fee, and a realistic timeline. No hourly billing ambiguity.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">Step 03</div>
+        <h3>Focused Engagement</h3>
+        <p>I work the problem. You stay in the loop. No unnecessary meetings — just steady progress toward the deliverable.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">Step 04</div>
+        <h3>Clean Handoff</h3>
+        <p>Final deliverables are documented and built to last. You walk away with something you can actually use — and maintain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner">
+      <div>
+        <div class="cta-eyebrow">Ready to Move?</div>
+        <h2 class="cta-title">Let's solve the actual problem.</h2>
+        <p class="cta-sub">If you've got an HR challenge that's been sitting on the backburner too long, let's have a direct conversation. No obligation, no sales process.</p>
+      </div>
+      <div>
+        <a href="#" class="btn-cta" onclick="openModal(event)">
+          Get in Touch
+          <span class="btn-cta-sub">No commitments. Just a conversation.</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">Robie Co.</div>
+      <div class="footer-copy">© 2025 Robie Co. All rights reserved.</div>
+      <ul class="footer-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#" onclick="openModal(event)">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2 class="modal-title">Let's Talk</h2>
+    <p class="modal-sub">Tell me what you're working with. I'll follow up within one business day.</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" placeholder="Jane">
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" placeholder="Smith">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Organization</label>
+      <input type="text" placeholder="Agency / Department / Company">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" placeholder="jane@agency.gov">
+    </div>
+    <div class="form-group">
+      <label>What do you need help with?</label>
+      <select>
+        <option value="" disabled selected>Select a service area</option>
+        <option>Position Classification</option>
+        <option>Hiring &amp; Assessment</option>
+        <option>Process Improvement</option>
+        <option>Policy &amp; Compliance</option>
+        <option>Something else</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Tell me more (optional)</label>
+      <textarea placeholder="Brief description of the challenge, timeline, scope — whatever's useful."></textarea>
+    </div>
+    <button class="btn-submit">Send Message →</button>
+    <p class="form-note">No spam. No pitch emails. Just a real conversation.</p>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  const ham = document.getElementById('hamburger');
+  const mob = document.getElementById('mobile-menu');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    mob.classList.toggle('open');
+    document.body.style.overflow = mob.classList.contains('open') ? 'hidden' : '';
+  });
+  function closeMobileMenu() {
+    ham.classList.remove('open');
+    mob.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function openModal(e) {
+    if (e) e.preventDefault();
+    closeMobileMenu();
+    document.getElementById('modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.style.opacity = '1';
+        el.target.style.transform = 'translateY(0)';
+        obs.unobserve(el.target);
+      }
+    });
+  }, { threshold: 0.07 });
+
+  document.querySelectorAll('.problem-item, .service-card, .process-step, .stat-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = `opacity 0.5s ease ${(i % 4) * 0.07}s, transform 0.5s ease ${(i % 4) * 0.07}s`;
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
